@@ -1,0 +1,344 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Bilan Carbone & Économies - CarbonIndexPro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-green: #10b981;
+            --dark-text: #1e293b;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0fdf4;
+            color: var(--dark-text);
+        }
+
+        .navbar {
+            background: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .form-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+            padding: 2rem;
+            border: 1px solid rgba(16, 185, 129, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary-green);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Bouton Action */
+        .btn-action {
+            background: var(--primary-green);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            border: none;
+            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
+            transition: 0.3s;
+            width: 100%;
+        }
+
+            .btn-action:hover {
+                transform: translateY(-2px);
+                background: #059669;
+            }
+
+        /* Résultats */
+        .result-box {
+            display: none;
+            margin-top: 40px;
+        }
+
+        .score-card {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            text-align: center;
+            height: 100%;
+            border: 1px solid #e2e8f0;
+        }
+
+        .score-val {
+            font-size: 3rem;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        /* Plan Action */
+        .priority-badge {
+            background: #1e293b;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .savings-tag {
+            background: #dcfce7;
+            color: #166534;
+            padding: 5px 10px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar py-3 mb-5">
+        <div class="container">
+            <a href="index.html" class="navbar-brand fw-bold text-dark">CarbonIndex<span class="text-success">Pro</span></a>
+            <a href="index.html" class="btn btn-sm btn-outline-secondary rounded-pill">← Retour</a>
+        </div>
+    </nav>
+
+    <div class="container pb-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+
+                <div class="text-center mb-5">
+                    <h1 class="fw-bold mb-2">Simulateur Éco-Gestes</h1>
+                    <p class="text-muted">Calculez vos gains financiers sur 5 ans et votre impact CO₂.</p>
+                </div>
+
+                <form id="carbonForm">
+                    <div class="form-card">
+                        <div class="section-title"><span>🏠</span> Mon Logement</div>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-muted">Chauffage</label>
+                                <select class="form-select" id="chauffage">
+                                    <option value="elec">Électrique</option>
+                                    <option value="gaz">Gaz</option>
+                                    <option value="fioul">Fioul</option>
+                                    <option value="bois">Bois</option>
+                                    <option value="pompe">Pompe à Chaleur</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-muted">Éclairage (Nouveau)</label>
+                                <select class="form-select" id="eclairage">
+                                    <option value="ampoule">Ampoules classiques</option>
+                                    <option value="led">Tout LED</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-muted">Facture / mois (€)</label>
+                                <input type="number" class="form-control" id="factureMensuelle" value="150">
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label small fw-bold text-muted">Surface (m²)</label>
+                                <input type="number" class="form-control" id="surface" value="90">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-card">
+                        <div class="section-title"><span>🚗</span> Mes Transports</div>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-muted">Véhicule</label>
+                                <select class="form-select" id="typeVoiture">
+                                    <option value="diesel">Diesel</option>
+                                    <option value="essence">Essence</option>
+                                    <option value="elec">Électrique</option>
+                                    <option value="aucun">Pas de voiture</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-muted">Km / an</label>
+                                <input type="number" class="form-control" id="kmVoiture" value="15000">
+                            </div>
+                            <div class="col-12 mt-3 p-3 bg-light rounded border">
+                                <label class="form-label small fw-bold text-dark">💰 Estimation Reprise (Optionnel)</label>
+                                <div class="row align-items-center">
+                                    <div class="col-auto"><small>Valeur actuelle de votre voiture :</small></div>
+                                    <div class="col"><input type="number" class="form-control" id="valeurReprise" placeholder="Ex: 5000"></div>
+                                    <div class="col-auto">€</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-card">
+                        <div class="section-title"><span>🍽️</span> Habitudes</div>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-muted">Alimentation</label>
+                                <select class="form-select" id="alimentation">
+                                    <option value="viande">Carnivore</option>
+                                    <option value="mixte">Flexitarien</option>
+                                    <option value="vege">Végétarien</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-muted">High-Tech</label>
+                                <select class="form-select" id="numerique">
+                                    <option value="neuf">J'achète Neuf</option>
+                                    <option value="recond">Reconditionné</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="button" class="btn btn-action" onclick="calculerGlobal()">
+                        Calculer mes gains 🚀
+                    </button>
+                </form>
+
+                <div id="resultats" class="result-box">
+
+                    <div class="row g-4 mb-5">
+                        <div class="col-md-6">
+                            <div class="score-card border-success">
+                                <div class="text-success fw-bold text-uppercase small">Votre Empreinte</div>
+                                <div class="my-3"><span id="scoreCO2" class="score-val text-success">...</span> <span class="fs-4">tCO₂</span></div>
+                                <p class="small text-muted mb-0">Moyenne FR : 9t | Objectif : 2t</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="score-card border-warning" style="background: #fffbeb;">
+                                <div class="text-warning fw-bold text-uppercase small">Gain sur 5 ans</div>
+                                <div class="my-3"><span id="gain5ans" class="score-val text-warning">...</span> <span class="fs-4">€</span></div>
+                                <p class="small text-muted mb-0">Cumul économies Énergie + Carburant</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h4 class="fw-bold mb-4">🏆 Votre Plan de Bataille Prioritaire</h4>
+
+                    <div class="card border-0 shadow-sm p-4 mb-3">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <span class="priority-badge">Priorité #1</span>
+                            <span class="savings-tag">+ <span id="gainChauffage">0</span> € / an</span>
+                        </div>
+                        <h5 class="fw-bold">Rénovation Énergétique</h5>
+                        <p class="small text-muted mb-3">Votre chauffage actuel pèse lourd. En passant à une Pompe à Chaleur, vous divisez la facture par 3.</p>
+
+                        <div class="alert alert-info py-2 small">
+                            <strong>🎁 Aides de l'État :</strong> Jusqu'à <strong>9 000 €</strong> avec MaPrimeRénov'.
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex">
+                            <a href="https://france-renov.gouv.fr/aides/maprimerenov" target="_blank" class="btn btn-dark btn-sm rounded-pill px-4">Voir Barème Aides</a>
+                            <a href="https://www.effy.fr/simulateur" target="_blank" class="btn btn-outline-success btn-sm rounded-pill px-4">Devis Pompe à Chaleur</a>
+                        </div>
+                    </div>
+
+                    <div class="card border-0 shadow-sm p-4 mb-3">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <span class="priority-badge">Priorité #2</span>
+                            <span class="savings-tag">+ <span id="gainCarburant">0</span> € / an</span>
+                        </div>
+                        <h5 class="fw-bold">Mobilité Électrique</h5>
+                        <p class="small text-muted mb-3">Stop au carburant cher. Voici le coût réel d'un passage à l'électrique :</p>
+
+                        <div class="bg-light p-3 rounded mb-3 small">
+                            <div class="d-flex justify-content-between"><span>Prix Neuf (ex: MG4/R5)</span> <span>28 000 €</span></div>
+                            <div class="d-flex justify-content-between text-success"><span>- Bonus Écologique</span> <span>- 4 000 €</span></div>
+                            <div class="d-flex justify-content-between text-success"><span>- Votre Reprise Estm.</span> <span id="affReprise">- 0 €</span></div>
+                            <hr class="my-1">
+                            <div class="d-flex justify-content-between fw-bold fs-6"><span>Coût Final</span> <span id="prixVoitureFinal">... €</span></div>
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex">
+                            <a href="https://www.service-public.fr/particuliers/vosdroits/F34014" target="_blank" class="btn btn-dark btn-sm rounded-pill px-4">Infos Bonus 2025</a>
+                            <a href="https://www.vendezvotrevoiture.fr/evaluation-voiture/" target="_blank" class="btn btn-outline-primary btn-sm rounded-pill px-4">Confirmer ma Reprise</a>
+                        </div>
+                    </div>
+
+                    <div class="card border-0 shadow-sm p-4">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <span class="priority-badge">Priorité #3</span>
+                            <span class="savings-tag">+ <span id="gainLed">0</span> € / an</span>
+                        </div>
+                        <h5 class="fw-bold">Éclairage LED</h5>
+                        <p class="small text-muted mb-2">Passez tout en LED. C'est l'investissement le plus rentable (ROI en 6 mois).</p>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function calculerGlobal() {
+            // 1. Inputs
+            let surface = parseFloat(document.getElementById('surface').value) || 0;
+            let chauffage = document.getElementById('chauffage').value;
+            let eclairage = document.getElementById('eclairage').value;
+            let factureMensuelle = parseFloat(document.getElementById('factureMensuelle').value) || 0;
+            let km = parseFloat(document.getElementById('kmVoiture').value) || 0;
+            let typeVoiture = document.getElementById('typeVoiture').value;
+            let valReprise = parseFloat(document.getElementById('valeurReprise').value) || 0;
+            let alim = document.getElementById('alimentation').value;
+
+            // 2. CO2
+            let co2m2 = (chauffage === 'elec' || chauffage === 'pompe') ? 10 : 45;
+            let totalCo2Logement = (surface * co2m2) / 2; // /2 habitants moy
+            let co2km = (typeVoiture === 'elec') ? 0.05 : 0.20;
+            let totalCo2Transport = (km * co2km);
+            let totalCo2Alim = (alim === 'viande') ? 2200 : 1200;
+            let totalCo2 = (totalCo2Logement + totalCo2Transport + totalCo2Alim) / 1000;
+
+            // 3. FINANCE
+            let factureAnnuelle = factureMensuelle * 12;
+
+            // Gain Chauffage
+            let gainChauffage = 0;
+            if (chauffage !== 'pompe') gainChauffage = factureAnnuelle * 0.4; // 40% gain PAC
+
+            // Gain LED (Si pas LED, on estime 10% de la facture élec économisable)
+            let gainLed = 0;
+            if (eclairage === 'ampoule') gainLed = 60; // Forfaitaire ~60€/an pour un foyer
+
+            // Gain Voiture
+            let coutCarb = (typeVoiture !== 'elec') ? (km / 100) * 1.8 * 7 : 0;
+            let coutElec = (km / 100) * 0.22 * 16;
+            let gainCarburant = (typeVoiture !== 'elec') ? coutCarb - coutElec : 0;
+
+            // Calcul Achat Auto
+            let prixFinal = 28000 - 4000 - valReprise;
+            if (prixFinal < 0) prixFinal = 0;
+
+            // CUMUL 5 ANS
+            let gainTotalAn = gainChauffage + gainCarburant + gainLed;
+            let gain5ans = gainTotalAn * 5;
+
+            // 4. AFFICHAGE
+            document.getElementById('scoreCO2').innerText = totalCo2.toFixed(1);
+            document.getElementById('gain5ans').innerText = gain5ans.toLocaleString();
+
+            document.getElementById('gainChauffage').innerText = gainChauffage.toFixed(0);
+            document.getElementById('gainCarburant').innerText = gainCarburant.toFixed(0);
+            document.getElementById('gainLed').innerText = gainLed.toFixed(0);
+
+            document.getElementById('affReprise').innerText = "- " + valReprise.toLocaleString() + " €";
+            document.getElementById('prixVoitureFinal').innerText = prixFinal.toLocaleString() + " €";
+
+            document.getElementById('resultats').style.display = 'block';
+            document.getElementById('resultats').scrollIntoView({ behavior: "smooth" });
+        }
+    </script>
+</body>
+</html>

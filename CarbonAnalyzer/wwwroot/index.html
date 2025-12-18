@@ -3,469 +3,174 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculateur Carbone PME | Pré-Diagnostic 2026</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>CarbonIndexPro - La Référence Carbone</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        /* --- CORRECTION 1 : GESTION DES TAILLES --- */
-        * {
-            box-sizing: border-box;
-        }
-
         :root {
             --primary: #0f172a;
-            --accent: #2563eb;
-            --bg: #f1f5f9;
-            --text: #334155;
-            --money: #16a34a;
+            --accent-green: #10b981;
+            --accent-blue: #3b82f6;
         }
 
         body {
-            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-
-        header {
-            background: white;
-            border-bottom: 1px solid #e2e8f0;
-            padding: 1rem 10%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-weight: 800;
-            font-size: 1.2rem;
-            color: var(--primary);
-        }
-
-        .container {
-            flex: 1;
-            padding: 40px 20px;
-            max-width: 1100px;
-            margin: 0 auto;
-            display: flex;
-            gap: 40px;
-            flex-wrap: wrap;
-            justify-content: center;
-            align-items: flex-start;
-        }
-
-        .card {
-            background: white;
-            padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
-            border: 1px solid #e2e8f0;
-            flex: 1;
-            min-width: 320px;
-            max-width: 500px;
-        }
-
-        h2 {
-            font-size: 1.1rem;
-            margin-top: 0;
-            color: var(--primary);
-            border-bottom: 2px solid #f1f5f9;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            margin-top: 15px;
-            color: #64748b;
-            font-size: 0.75rem;
-            font-weight: 700;
-            text-transform: uppercase;
-        }
-
-        input, select {
-            width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            border: 1px solid #cbd5e1;
-            border-radius: 6px;
+            font-family: 'Inter', sans-serif;
             background-color: #f8fafc;
+            color: #334155;
+        }
+
+        /* Navbar Pro */
+        .navbar-brand {
+            font-weight: 800;
+            letter-spacing: -1px;
+            color: var(--primary) !important;
+        }
+
+        .nav-link {
+            font-weight: 500;
             font-size: 0.95rem;
         }
 
-        button.primary-btn {
-            width: 100%;
-            margin-top: 25px;
-            padding: 14px;
-            background-color: var(--accent);
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 600;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-        }
-
-            button.primary-btn:hover {
-                background-color: #1d4ed8;
-            }
-
-        button:disabled {
-            opacity: 0.7;
-            cursor: not-allowed;
-        }
-
-        .loader {
-            border: 3px solid rgba(255,255,255,0.3);
-            border-radius: 50%;
-            border-top: 3px solid white;
-            width: 18px;
-            height: 18px;
-            animation: spin 1s linear infinite;
-            display: none;
-        }
-
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
-        @media print {
-            body {
-                background: white;
-            }
-
-            header, .input-section, footer, button, .money-btn {
-                display: none !important;
-            }
-
-            .container {
-                display: block;
-                padding: 0;
-                margin: 0;
-            }
-
-            .card {
-                box-shadow: none;
-                border: none;
-                max-width: 100%;
-                padding: 0;
-            }
-
-            #resultat {
-                display: block !important;
-            }
-
-            .print-only-header {
-                display: block !important;
-                margin-bottom: 20px;
-                text-align: center;
-                font-size: 1.5rem;
-                font-weight: bold;
-                color: var(--primary);
-            }
-
-            .methodology {
-                border-top: 2px solid #000;
-                color: #000 !important;
-            }
-        }
-
-        .print-only-header {
-            display: none;
-        }
-
-        .big-number {
-            font-size: 3rem;
+        /* Hero Section */
+        .hero-title {
             font-weight: 800;
+            letter-spacing: -1.5px;
             color: var(--primary);
-            line-height: 1;
-            margin: 10px 0;
         }
 
-        .unit {
-            font-size: 1rem;
-            color: #64748b;
-            font-weight: normal;
+        .hero-subtitle {
+            font-weight: 300;
+            font-size: 1.25rem;
+            line-height: 1.6;
         }
 
-        /* --- CORRECTION 2 : BOITE RECOMMENDATION --- */
-        .recommendation-box {
-            background-color: #eff6ff;
-            border-left: 4px solid #2563eb;
-            padding: 15px;
-            border-radius: 4px;
-            margin-top: 20px;
-            font-size: 0.9rem;
-            color: #1e40af;
-            font-weight: 500;
-            display: flex;
-            align-items: start;
-            gap: 10px;
-            flex-wrap: wrap; /* Permet au contenu de passer à la ligne si nécessaire */
+        /* Cartes Modernes */
+        .choice-card {
+            border: 1px solid rgba(0,0,0,0.05);
+            border-radius: 16px;
+            background: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            height: 100%;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
         }
 
-        /* --- CORRECTION 3 : BOUTON COMMERCIAL --- */
-        .money-btn {
-            display: block;
-            width: 100%;
-            margin-top: 15px;
-            background-color: var(--money);
-            color: white;
-            text-align: center;
-            padding: 12px;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: bold;
-            box-shadow: 0 4px 6px rgba(22, 163, 74, 0.2);
-            transition: transform 0.2s;
-            /* Ces lignes forcent le texte à revenir à la ligne sans casser le bouton */
-            white-space: normal;
-            line-height: 1.3;
-            word-wrap: break-word;
-        }
-
-            .money-btn:hover {
-                transform: translateY(-2px);
-                background-color: #15803d;
+            .choice-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
             }
 
-        .methodology {
-            margin-top: 30px;
-            font-size: 0.85rem;
-            color: #334155;
-            border-top: 2px solid #e2e8f0;
-            padding-top: 15px;
-            line-height: 1.5;
-            font-weight: 500;
-        }
-
-        .details-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            margin-top: 20px;
-            border-top: 1px solid #f1f5f9;
-            padding-top: 15px;
-        }
-
-        .detail-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.9rem;
-        }
-
-        .detail-label {
+        .icon-circle {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-weight: 500;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
         }
 
-        .dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 4px;
-            display: inline-block;
+        .bg-soft-green {
+            background: #d1fae5;
+            color: #059669;
         }
 
-        .detail-value {
-            font-weight: bold;
-            color: var(--primary);
+        .bg-soft-blue {
+            background: #dbeafe;
+            color: #2563eb;
         }
+
+        /* Boutons Pro */
+        .btn-custom {
+            padding: 12px 24px;
+            font-weight: 600;
+            border-radius: 8px;
+            border: none;
+            transition: 0.2s;
+        }
+
+        .btn-green {
+            background: var(--accent-green);
+            color: white;
+        }
+
+            .btn-green:hover {
+                background: #059669;
+                color: white;
+                transform: scale(1.02);
+            }
+
+        .btn-blue {
+            background: var(--accent-blue);
+            color: white;
+        }
+
+            .btn-blue:hover {
+                background: #2563eb;
+                color: white;
+                transform: scale(1.02);
+            }
     </style>
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">
 
-    <header>
-        <div class="logo">CarbonIndex<span style="color:#2563eb;">.Pro</span></div>
-        <div style="font-size:0.8rem;">Outil de pré-diagnostic RSE</div>
-    </header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom py-3">
+        <div class="container">
+            <a class="navbar-brand fs-4" href="index.html">CarbonIndex<span class="text-success">Pro</span></a>
+            <div class="d-flex gap-3">
+                <span class="badge bg-light text-dark border d-none d-md-block">v2.4 (2025)</span>
+            </div>
+        </div>
+    </nav>
 
-    <div class="container">
-
-        <div class="card input-section">
-            <h2>🏢 Votre Profil</h2>
-
-            <label>Secteur d'activité</label>
-            <select id="secteur">
-                <option value="bureau">Services / Bureaux</option>
-                <option value="tech">Tech / Numérique</option>
-                <option value="commerce">Commerce de proximité</option>
-                <option value="btp">Construction / BTP</option>
-                <option value="autre">Autre Industrie</option>
-            </select>
-
-            <label>Effectif (ETP)</label>
-            <input type="number" id="employes" value="10" min="1">
-
-            <label>Localisation</label>
-            <input type="text" id="cp" placeholder="Code Postal">
-
-            <label>Chauffage / Énergie</label>
-            <select id="chauffage">
-                <option value="electricite">Électricité (Standard)</option>
-                <option value="gaz">Gaz</option>
-                <option value="fioul">Fioul</option>
-                <option value="autre">Autre / Réseau de chaleur</option>
-            </select>
-
-            <label>Intensité des Déplacements</label>
-            <select id="transport">
-                <option value="faible">Faible (Sédentaire / Télétravail)</option>
-                <option value="moyen" selected>Moyenne (Standard secteur)</option>
-                <option value="fort">Forte (Flotte véhicules / Livraisons)</option>
-            </select>
-
-            <label>Volume d'Achats (Matériel/Stock)</label>
-            <select id="achats">
-                <option value="faible">Faible</option>
-                <option value="moyen" selected>Moyen</option>
-                <option value="fort">Élevé (Gros stocks)</option>
-            </select>
-
-            <button class="primary-btn" id="btnCalcul" onclick="calculer()">
-                <div class="loader" id="loader"></div>
-                <span id="btnText">Lancer le diagnostic</span>
-            </button>
+    <div class="container py-5 my-auto">
+        <div class="text-center mb-5">
+            <h1 class="display-4 hero-title mb-3">Mesurez. Comprenez. Agissez.</h1>
+            <p class="text-muted hero-subtitle mx-auto" style="max-width: 700px;">
+                La plateforme de référence pour l'analyse d'impact carbone et l'optimisation financière.
+                <br>Sélectionnez votre profil pour commencer.
+            </p>
         </div>
 
-        <div class="card" id="resultat" style="display:none;">
-            <div class="print-only-header">Rapport de Synthèse Carbone 2026</div>
-
-            <h2>Estimation Annuelle</h2>
-            <div style="text-align:center;">
-                <div class="big-number" id="valeurCo2">0 <span class="unit">tCO2e</span></div>
-                <div id="explication" style="font-size:0.8rem; color:#64748b;">...</div>
-            </div>
-
-            <div class="recommendation-box">
-                <div style="flex:1;">
-                    <span style="font-size:1.2rem; display:block; margin-bottom:5px;">💡 Conseil Expert</span>
-                    <span id="conseilText">...</span>
-
-                    <a href="#" id="boutonAction" class="money-btn" target="_blank">Voir les solutions</a>
+        <div class="row justify-content-center g-4">
+            <div class="col-md-5 d-flex">
+                <div class="choice-card d-flex flex-column">
+                    <div class="icon-circle bg-soft-green">🏡</div>
+                    <h3 class="fw-bold mb-2">Particuliers</h3>
+                    <p class="text-muted mb-4">Analysez votre quotidien (Logement, Auto, Conso) et découvrez les aides de l'État pour réduire vos factures.</p>
+                    <ul class="list-unstyled small text-muted mb-4">
+                        <li class="mb-2">✓ Bilan Carbone Simplifié</li>
+                        <li class="mb-2">✓ Simulateur Économies d'Énergie</li>
+                        <li>✓ Accès aux Aides (MaPrimeRénov')</li>
+                    </ul>
+                    <a href="particulier.html" class="btn btn-custom btn-green w-100 mt-auto">Commencer mon Bilan</a>
                 </div>
             </div>
 
-            <div style="position: relative; height:200px; width:100%; margin-top:20px;">
-                <canvas id="monGraphique"></canvas>
-            </div>
-
-            <div class="details-grid">
-                <div class="detail-row">
-                    <span class="detail-label"><span class="dot" style="background:#f59e0b;"></span> Énergie & Locaux</span>
-                    <span class="detail-value" id="txtEnergie">0 t</span>
+            <div class="col-md-5 d-flex">
+                <div class="choice-card d-flex flex-column">
+                    <div class="icon-circle bg-soft-blue">🏢</div>
+                    <h3 class="fw-bold mb-2">Entreprises</h3>
+                    <p class="text-muted mb-4">Un audit flash conforme aux standards ADEME pour optimiser votre RSE et votre TCO (Flotte, Bâtiment).</p>
+                    <ul class="list-unstyled small text-muted mb-4">
+                        <li class="mb-2">✓ Audit Scope 1, 2 & 3 (Partiel)</li>
+                        <li class="mb-2">✓ Calcul Fiscalité (TVS, Amortissements)</li>
+                        <li>✓ Benchmark Sectoriel</li>
+                    </ul>
+                    <a href="entreprise.html" class="btn btn-custom btn-blue w-100 mt-auto">Espace Professionnel</a>
                 </div>
-                <div class="detail-row">
-                    <span class="detail-label"><span class="dot" style="background:#3b82f6;"></span> Transport & Déplacements</span>
-                    <span class="detail-value" id="txtTransport">0 t</span>
-                </div>
-                <div class="detail-row">
-                    <span class="detail-label"><span class="dot" style="background:#10b981;"></span> Achats & Intrants</span>
-                    <span class="detail-value" id="txtAchats">0 t</span>
-                </div>
-            </div>
-
-            <div class="input-section" style="margin-top:20px; text-align:center;">
-                <button onclick="window.print()" style="background:white; border:1px solid #cbd5e1; padding:10px 20px; border-radius:6px; cursor:pointer;">
-                    📄 Télécharger le PDF / Imprimer
-                </button>
-            </div>
-
-            <div class="methodology">
-                <strong>ℹ️ Note méthodologique :</strong> <br>
-                Ce calcul est une estimation basée sur les facteurs d'émission moyens de la <strong>Base Empreinte® de l'ADEME</strong>. Il ne constitue pas un audit réglementaire certifié.
             </div>
         </div>
     </div>
 
-    <script>
-        let myChart = null;
+    <footer class="bg-white border-top py-4 mt-auto">
+        <div class="container text-center">
+            <p class="small text-muted mb-0">© 2025 CarbonIndexPro. Tous droits réservés. <br>Données basées sur les facteurs d'émissions publics (ADEME Base Carbone®).</p>
+        </div>
+    </footer>
 
-        async function calculer() {
-            const btn = document.getElementById('btnCalcul');
-            const loader = document.getElementById('loader');
-            const btnText = document.getElementById('btnText');
-
-            btn.disabled = true;
-            loader.style.display = 'block';
-            btnText.innerText = "Analyse en cours...";
-
-            const data = {
-                secteur: document.getElementById('secteur').value,
-                nombreEmployes: parseInt(document.getElementById('employes').value),
-                codePostal: document.getElementById('cp').value,
-                typeChauffage: document.getElementById('chauffage').value,
-                intensiteTransport: document.getElementById('transport').value,
-                intensiteAchats: document.getElementById('achats').value
-            };
-
-            try {
-                await new Promise(r => setTimeout(r, 800));
-
-                const response = await fetch('/api/carbon/calculer', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
-                });
-
-                const result = await response.json();
-
-                document.getElementById('resultat').style.display = 'block';
-                document.getElementById('valeurCo2').innerHTML = result.totalCo2 + ' <span class="unit">tCO2e</span>';
-                document.getElementById('explication').innerText = result.explicationCalcul;
-                document.getElementById('conseilText').innerText = result.conseilAction;
-
-                // MISE A JOUR BOUTON COMMERCIAL
-                const btnAction = document.getElementById('boutonAction');
-                btnAction.innerText = result.titreBouton;
-                btnAction.href = result.lienPartenaire;
-
-                document.getElementById('txtEnergie').innerText = result.partEnergie + " tCO2e";
-                document.getElementById('txtTransport').innerText = result.partTransport + " tCO2e";
-                document.getElementById('txtAchats').innerText = result.partAchats + " tCO2e";
-
-                const ctx = document.getElementById('monGraphique').getContext('2d');
-                if (myChart) { myChart.destroy(); }
-
-                myChart = new Chart(ctx, {
-                    type: 'doughnut',
-                    data: {
-                        labels: ['Énergie', 'Déplacements', 'Achats'],
-                        datasets: [{
-                            data: [result.partEnergie, result.partTransport, result.partAchats],
-                            backgroundColor: ['#f59e0b', '#3b82f6', '#10b981'],
-                            borderWidth: 0
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: { legend: { display: false } }
-                    }
-                });
-
-            } catch (error) {
-                alert("Erreur de calcul.");
-            } finally {
-                btn.disabled = false;
-                loader.style.display = 'none';
-                btnText.innerText = "Relancer le diagnostic";
-            }
-        }
-    </script>
 </body>
 </html>
