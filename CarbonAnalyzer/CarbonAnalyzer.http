@@ -1,0 +1,6 @@
+@CarbonAnalyzer_HostAddress = http://localhost:5029
+
+GET {{CarbonAnalyzer_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
