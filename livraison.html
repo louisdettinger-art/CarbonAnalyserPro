@@ -1,0 +1,533 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Votre Espace Client - CarbonIndexPro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        :root {
+            --primary: #0f172a;
+            --accent: #3b82f6;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #334155;
+        }
+
+        .navbar {
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .delivery-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            height: 100%;
+            transition: 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+            .delivery-card:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            }
+
+        .section-header {
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .icon-box {
+            width: 36px;
+            height: 36px;
+            background: #eff6ff;
+            color: var(--accent);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+
+        /* BADGE CSS */
+        .badge-visual {
+            width: 140px;
+            height: 140px;
+            background: linear-gradient(135deg, #0f172a 0%, #334155 100%);
+            border-radius: 50%;
+            border: 4px solid #10b981;
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            margin: 0 auto 1.5rem auto;
+            position: relative;
+        }
+
+        .badge-year {
+            font-size: 1.8rem;
+            font-weight: 800;
+            line-height: 1;
+            color: #10b981;
+        }
+
+        .badge-label {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 5px;
+            opacity: 0.9;
+        }
+
+        .badge-tick {
+            position: absolute;
+            bottom: -10px;
+            background: #10b981;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 3px solid white;
+            font-weight: bold;
+        }
+
+        .premium-feature {
+            display: none;
+        }
+
+        /* --- PDF PRINCIPAL (AUDIT) --- */
+        #rapportPDF {
+            width: 800px;
+            background: white;
+            padding: 0;
+            display: none;
+            font-family: 'Inter', sans-serif;
+            color: #1e293b;
+        }
+
+        .pdf-header {
+            background: #0f172a;
+            color: white;
+            padding: 40px;
+        }
+
+        .pdf-body {
+            padding: 40px;
+        }
+
+        .pdf-grid {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .pdf-box {
+            flex: 1;
+            background: #f1f5f9;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
+        }
+
+            .pdf-box strong {
+                font-size: 24px;
+                color: #0f172a;
+                display: block;
+            }
+
+        .pdf-section-title {
+            font-size: 16px;
+            font-weight: bold;
+            border-bottom: 2px solid #0f172a;
+            padding-bottom: 8px;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+
+            .data-table th {
+                text-align: left;
+                background: #e2e8f0;
+                padding: 8px;
+                width: 40%;
+            }
+
+            .data-table td {
+                padding: 8px;
+                border-bottom: 1px solid #e2e8f0;
+            }
+
+        /* --- PDF FICHES ACTIONS (TEMPLATE EXPERT) --- */
+        #ficheActionTemplate {
+            width: 700px;
+            background: white;
+            padding: 0;
+            display: none;
+            font-family: 'Inter', sans-serif;
+            color: #334155;
+        }
+
+        .guide-header {
+            padding: 40px;
+            color: white;
+        }
+        /* Couleur dynamique */
+        .guide-body {
+            padding: 40px;
+        }
+
+        .guide-roi-box {
+            background: #f8fafc;
+            border: 2px dashed #cbd5e1;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+        }
+
+        .guide-step {
+            margin-bottom: 20px;
+        }
+
+        .guide-step-title {
+            font-weight: 800;
+            font-size: 14px;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .guide-step-desc {
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .guide-footer {
+            margin-top: 40px;
+            font-size: 10px;
+            color: #94a3b8;
+            text-align: center;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar p-3">
+        <div class="container">
+            <span class="fw-bold fs-5">CarbonIndex<span class="text-primary">Pro</span></span>
+            <div>
+                <span class="badge bg-success me-2">Paiement Validé</span>
+                <span class="badge bg-dark" id="userPack">Pack ...</span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container py-5">
+        <div class="text-center mb-5">
+            <h1 class="fw-bold">Félicitations ! Vos outils sont prêts 🚀</h1>
+            <p class="text-muted">Votre pack est activé. Voici vos livrables certifiés.</p>
+        </div>
+
+        <div class="row g-4 mb-4">
+
+            <div class="col-md-4">
+                <div class="delivery-card text-center">
+                    <div class="section-header justify-content-center mb-4">🏅 Badge Officiel</div>
+                    <div class="badge-visual">
+                        <div class="badge-label">ENTREPRISE</div>
+                        <div class="badge-year">2025</div>
+                        <div class="badge-label">ENGAGÉE RSE</div>
+                        <div class="badge-tick">✓</div>
+                    </div>
+                    <p class="small text-muted mt-auto">À insérer sur votre site web.</p>
+                    <button class="btn btn-outline-dark btn-sm fw-bold w-100" onclick="alert('Badge PNG téléchargé !')">⬇️ Télécharger (PNG)</button>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="delivery-card">
+                    <div class="section-header"><div class="icon-box">📄</div> Audit PDF Complet</div>
+                    <p class="small text-muted mb-4">Votre document officiel incluant le détail complet de vos consommations et l'analyse sectorielle.</p>
+                    <div class="bg-light p-3 rounded mb-3 text-center border">
+                        <span style="font-size: 3rem;">📑</span>
+                    </div>
+                    <button class="btn btn-primary fw-bold w-100 mt-auto" onclick="genererPDF()">📥 Télécharger l'Audit Complet</button>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="delivery-card">
+                    <div class="section-header"><div class="icon-box">✅</div> Plan d'Action</div>
+                    <p class="small text-muted">Guides techniques de mise en œuvre :</p>
+                    <div class="d-grid gap-2 mb-3">
+                        <button class="btn btn-sm btn-outline-secondary text-start" onclick="telechargerFiche('Flotte')">🚘 Guide Flotte & Bornes</button>
+                        <button class="btn btn-sm btn-outline-secondary text-start" onclick="telechargerFiche('Energie')">⚡ Guide Relamping & CEE</button>
+                        <button class="btn btn-sm btn-outline-secondary text-start" onclick="telechargerFiche('IT')">💻 Guide Numérique Responsable</button>
+                    </div>
+                    <p class="small text-muted fst-italic mt-auto">Guides incluant ROI et aides de l'État.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="blocMedium" class="premium-feature">
+            <h4 class="fw-bold mb-3 text-primary pt-4 border-top">⚡ Pack Précision : Vos Outils Scope 3</h4>
+            <div class="card border-0 shadow-sm p-4 mb-4" style="background: linear-gradient(135deg, #eff6ff 0%, #ffffff 100%); border: 1px solid #bfdbfe;">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h5 class="fw-bold">📢 Sondage Collaborateurs</h5>
+                        <p class="small text-muted mb-0">Lien unique pour collecter les trajets domicile-travail réels de vos salariés.</p>
+                    </div>
+                    <div class="col-md-5 text-end">
+                        <label class="small fw-bold text-muted mb-1 d-block text-start">Votre lien de collecte :</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control form-control-sm" value="https://carbonanalyserpro.onrender.com/sondage.html" id="sondageLink" readonly>
+                            <button class="btn btn-primary btn-sm" onclick="copierLien()">Copier</button>
+                        </div>
+                        <div class="text-start mt-2">
+                            <a href="sondage.html" target="_blank" class="small text-decoration-underline text-primary">Tester le lien →</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="blocExpert" class="premium-feature">
+            <h4 class="fw-bold mb-3 text-warning pt-4 border-top">👑 Pack Expert : Pilotage RSE</h4>
+            <div class="row g-4">
+                <div class="col-md-8">
+                    <div class="delivery-card bg-dark text-white border-0">
+                        <div class="section-header text-white"><div class="icon-box bg-white text-dark">📈</div> Tableau de Bord Live</div>
+                        <p class="opacity-75 small">Suivi mensuel des factures & CO₂.</p>
+                        <div class="progress mb-3" style="height: 15px;">
+                            <div class="progress-bar bg-warning text-dark fw-bold" role="progressbar" style="width: 25%">Objectif -25%</div>
+                        </div>
+                        <button class="btn btn-warning fw-bold btn-sm w-100 mt-2">Accéder au Dashboard</button>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="delivery-card">
+                        <div class="section-header"><div class="icon-box">📂</div> Coffre-fort</div>
+                        <p class="small text-muted">Stockage factures.</p>
+                        <button class="btn btn-outline-secondary btn-sm w-100 mt-auto">+ Uploader</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-5">
+            <a href="index.html" class="text-muted text-decoration-none small">← Revenir à l'accueil</a>
+        </div>
+    </div>
+
+    <div id="rapportPDF">
+        <div class="pdf-header">
+            <div style="font-size: 28px; font-weight: 800;">CarbonIndexPro<span style="color:#3b82f6">.</span></div>
+            <div style="margin-top:10px; font-size: 12px; opacity: 0.8;">RAPPORT D'AUDIT COMPLET V10<br>Date : <span id="pdfDate">...</span></div>
+        </div>
+        <div class="pdf-body">
+            <div class="pdf-grid">
+                <div class="pdf-box">
+                    <h4>Empreinte Annuelle</h4>
+                    <strong id="pdfScore">...</strong> <span>tCO₂e</span>
+                </div>
+                <div class="pdf-box" style="background:#f0fdf4; border-color:#bbf7d0;">
+                    <h4 style="color:#166534">Gains Identifiés (5 ans)</h4>
+                    <strong id="pdfEco" style="color:#166534">...</strong>
+                </div>
+            </div>
+
+            <div class="pdf-section-title">1. Données de l'Entreprise</div>
+            <table class="data-table">
+                <tr><th>Secteur</th><td id="pdfSecteur">...</td></tr>
+                <tr><th>Code Postal</th><td id="pdfCP">...</td></tr>
+                <tr><th>Surface Locaux</th><td id="pdfSurface">... m²</td></tr>
+                <tr><th>Effectif</th><td id="pdfEffectif">... collaborateurs</td></tr>
+                <tr><th>Politique Télétravail</th><td id="pdfTT">...</td></tr>
+            </table>
+
+            <div class="pdf-section-title">2. Analyse Énergétique & Mobilité</div>
+            <table class="data-table">
+                <tr><th>Système de Chauffage</th><td id="pdfChauffage">...</td></tr>
+                <tr><th>Type d'Éclairage</th><td id="pdfEclairage">...</td></tr>
+                <tr><th>Flotte Thermique</th><td id="pdfFlotte">... véhicules</td></tr>
+                <tr><th>Parc Informatique</th><td id="pdfIT">... postes</td></tr>
+                <tr><th>Politique Achat IT</th><td id="pdfAchat">...</td></tr>
+            </table>
+
+            <div class="pdf-section-title">3. Recommandations Stratégiques</div>
+            <ul style="font-size: 12px; line-height: 1.6;">
+                <li><strong>Flotte :</strong> Transition vers l'électrique recommandée.</li>
+                <li><strong>Bâtiment :</strong> Relamping LED immédiat.</li>
+                <li><strong>Numérique :</strong> Allongement durée de vie matériel.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="ficheActionTemplate">
+        <div class="guide-header" id="guideHeader" style="background: #333;">
+            <div style="font-size: 14px; opacity: 0.8; text-transform: uppercase;">Guide de Mise en Œuvre</div>
+            <h1 style="font-size: 28px; font-weight: 800; margin-top: 10px;" id="guideTitle">Titre du Guide</h1>
+        </div>
+
+        <div class="guide-body">
+            <div class="guide-roi-box">
+                <h4 style="margin-top:0; font-size:16px; color:#333;">💡 Pourquoi agir ? (ROI)</h4>
+                <p style="margin-bottom:0; font-size:13px;" id="guideROI">...</p>
+            </div>
+
+            <div id="guideSteps">
+            </div>
+
+            <div style="margin-top: 30px; padding: 15px; background: #fffbeb; border: 1px solid #fcd34d; border-radius: 8px;">
+                <strong style="color: #b45309; font-size: 13px;">🔥 Aides Disponibles :</strong>
+                <div id="guideAides" style="font-size: 13px; color: #78350f; margin-top: 5px;">...</div>
+            </div>
+        </div>
+
+        <div class="guide-footer">
+            Document technique CarbonIndexPro - Usage interne uniquement.
+        </div>
+    </div>
+
+    <script>
+        // --- 1. DONNÉES DES FICHES ACTIONS (Dictionnaire de Contenu) ---
+        const guidesContent = {
+            'Flotte': {
+                title: "Transition Flotte Électrique",
+                color: "#166534", // Vert Foncé
+                roi: "Le TCO (Coût Total de Possession) d'un véhicule électrique est désormais inférieur au thermique grâce aux économies de carburant (-70%) et d'entretien (-30%). Exonération totale de TVS (Taxe sur les Véhicules de Société).",
+                aides: "Bonus Écologique (jusqu'à 3000€/véhicule) + Prime ADVENIR (financement bornes).",
+                steps: [
+                    { title: "1. Analyse des trajets", desc: "Identifiez les collaborateurs parcourant moins de 200km/jour. Ce sont les cibles prioritaires pour l'électrification." },
+                    { title: "2. Choix des véhicules", desc: "Privilégiez des modèles avec une autonomie WLTP > 400km. Optez pour la LLD (Leasing) pour limiter le risque technologique." },
+                    { title: "3. Installation de Bornes (IRVE)", desc: "Faites appel à un électricien qualifié IRVE. Prévoyez une puissance de 7kW ou 22kW selon votre abonnement Enedis." }
+                ]
+            },
+            'Energie': {
+                title: "Relamping LED & Optimisation",
+                color: "#1e40af", // Bleu Foncé
+                roi: "Le passage en LED réduit la consommation d'éclairage de 60 à 80%. Le retour sur investissement (ROI) est généralement inférieur à 24 mois. Durée de vie x10 par rapport aux néons.",
+                aides: "Certificats d'Économies d'Énergie (CEE) : Prise en charge jusqu'à 100% du matériel via la fiche BAR-EN-104.",
+                steps: [
+                    { title: "1. Inventaire du parc", desc: "Comptez le nombre de points lumineux et relevez la puissance actuelle (ex: tube fluo 58W)." },
+                    { title: "2. Étude d'éclairement", desc: "Demandez une simulation Dialux pour garantir le confort visuel (500 lux pour des bureaux)." },
+                    { title: "3. Déploiement & Recyclage", desc: "Les anciennes lampes doivent être traitées par la filière Récylum (éco-organisme)." }
+                ]
+            },
+            'IT': {
+                title: "Numérique Responsable",
+                color: "#1e293b", // Gris Foncé
+                roi: "Acheter reconditionné coûte 30 à 50% moins cher que le neuf. Allonger la durée de vie de 3 à 5 ans réduit l'amortissement comptable annuel.",
+                aides: "Crédit d'Impôt (si label écologique) + Valorisation RSE (Bilan Carbone scope 3).",
+                steps: [
+                    { title: "1. Audit du parc", desc: "Identifiez les postes pouvant être mis à niveau (ajout RAM/SSD) au lieu d'être remplacés." },
+                    { title: "2. Politique d'achat", desc: "Intégrez une clause 'Reconditionné' ou 'Label TCO' dans vos appels d'offres." },
+                    { title: "3. Fin de vie", desc: "Ne jetez rien. Donnez aux associations (ex: Emmaüs Connect) ou revendez à des brokers (BackMarket Pro)." }
+                ]
+            }
+        };
+
+        window.onload = function () {
+            let data = JSON.parse(localStorage.getItem('auditData'));
+            // Données de secours
+            if (!data) { data = { pack: 'expert', scoreCO2: '25.4', economies: '12 500', secteur: 'Services', date: '18/12/2025', cp: '75000', surface: '300', effectif: '20', teletravail: 'Oui', chauffage: 'Elec', eclairage: 'Neon', nbThermique: '5', nbPostes: '20', achatIT: 'Neuf' }; }
+
+            document.getElementById('userPack').innerText = "Pack " + data.pack.toUpperCase();
+
+            // Remplissage PDF Audit
+            document.getElementById('pdfDate').innerText = data.date;
+            document.getElementById('pdfScore').innerText = data.scoreCO2 + " t";
+            document.getElementById('pdfEco').innerText = data.economies;
+
+            document.getElementById('pdfSecteur').innerText = data.secteur;
+            document.getElementById('pdfCP').innerText = data.cp;
+            document.getElementById('pdfSurface').innerText = data.surface;
+            document.getElementById('pdfEffectif').innerText = data.effectif;
+            document.getElementById('pdfTT').innerText = data.teletravail;
+
+            document.getElementById('pdfChauffage').innerText = data.chauffage;
+            document.getElementById('pdfEclairage').innerText = data.eclairage;
+            document.getElementById('pdfFlotte').innerText = data.nbThermique;
+            document.getElementById('pdfIT').innerText = data.nbPostes;
+            document.getElementById('pdfAchat').innerText = data.achatIT;
+
+            // Déblocage Zones
+            if (data.pack === 'medium' || data.pack === 'expert') { document.getElementById('blocMedium').style.display = 'block'; }
+            if (data.pack === 'expert') { document.getElementById('blocExpert').style.display = 'block'; }
+        };
+
+        // Génération Rapport Audit
+        function genererPDF() {
+            const element = document.getElementById('rapportPDF');
+            element.style.display = 'block';
+            var opt = { margin: 0, filename: 'Audit_Complet_2025.pdf', image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2, useCORS: true }, jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' } };
+            html2pdf().set(opt).from(element).save().then(() => { element.style.display = 'none'; });
+        }
+
+        // --- NOUVEAU : GÉNÉRATEUR DE FICHES DYNAMIQUES ---
+        function telechargerFiche(type) {
+            const content = guidesContent[type];
+            if (!content) return;
+
+            // 1. Remplir le Template HTML caché avec les bonnes données
+            document.getElementById('guideTitle').innerText = content.title;
+            document.getElementById('guideHeader').style.background = content.color;
+            document.getElementById('guideROI').innerText = content.roi;
+            document.getElementById('guideAides').innerText = content.aides;
+
+            // Générer les étapes (boucle)
+            let stepsHtml = "";
+            content.steps.forEach(step => {
+                stepsHtml += `
+                    <div class="guide-step">
+                        <div class="guide-step-title" style="color:${content.color}">${step.title}</div>
+                        <div class="guide-step-desc">${step.desc}</div>
+                    </div>`;
+            });
+            document.getElementById('guideSteps').innerHTML = stepsHtml;
+
+            // 2. Générer le PDF
+            const element = document.getElementById('ficheActionTemplate');
+            element.style.display = 'block';
+
+            var opt = { margin: 0, filename: 'Guide_' + type + '.pdf', image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' } };
+
+            html2pdf().set(opt).from(element).save().then(() => { element.style.display = 'none'; });
+        }
+        // Fonction pour copier le lien dans le presse-papier
+        function copierLien() {
+            var copyText = document.getElementById("sondageLink");
+            copyText.select();
+            copyText.setSelectionRange(0, 99999); // Pour mobile
+            navigator.clipboard.writeText(copyText.value);
+            alert("Lien copié ! Envoyez-le à vos collaborateurs.");
+        }
+    </script>
+</body>
+</html>

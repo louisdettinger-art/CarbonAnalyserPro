@@ -1,0 +1,282 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Espace Client - CarbonIndexPro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f5f9;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 260px;
+            background: #0f172a;
+            height: 100vh;
+            position: fixed;
+            color: white;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand {
+            font-size: 20px;
+            font-weight: 800;
+            margin-bottom: 40px;
+            display: block;
+            text-decoration: none;
+            color: white;
+        }
+
+        .nav-link {
+            color: #94a3b8;
+            text-decoration: none;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 5px;
+            display: block;
+            transition: 0.2s;
+            font-size: 0.95rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+            .nav-link:hover, .nav-link.active {
+                background: #1e293b;
+                color: white;
+            }
+
+            .nav-link i {
+                width: 25px;
+            }
+
+        /* Cadenas pour les features payantes */
+        .lock-icon {
+            font-size: 0.8rem;
+            opacity: 0.5;
+        }
+
+        /* CONTENT */
+        .main-content {
+            margin-left: 260px;
+            padding: 30px;
+        }
+
+        .dash-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            height: 100%;
+        }
+
+        .stat-val {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #0f172a;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        /* Blur Effect pour les comptes gratuits */
+        .blur-content {
+            filter: blur(5px);
+            pointer-events: none;
+            user-select: none;
+            opacity: 0.6;
+        }
+
+        .upgrade-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #0f172a;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-weight: bold;
+            z-index: 10;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .premium-block {
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <a href="index.html" class="brand">CarbonIndex<span style="color:#3b82f6">Pro</span></a>
+
+        <nav>
+            <a href="#" class="nav-link active">📊 Vue d'ensemble</a>
+
+            <a href="#" class="nav-link premium-link">
+                <span>📝 Mes Sondages</span> <span class="lock-icon">🔒</span>
+            </a>
+            <a href="#" class="nav-link premium-link">
+                <span>⚡ Factures & Énergie</span> <span class="lock-icon">🔒</span>
+            </a>
+            <a href="#" class="nav-link premium-link">
+                <span>👥 Collaborateurs</span> <span class="lock-icon">🔒</span>
+            </a>
+        </nav>
+
+        <div class="mt-auto">
+            <div class="p-3 bg-dark rounded border border-secondary mb-3">
+                <small class="text-muted d-block mb-1">Votre Pack</small>
+                <strong class="text-white" id="packLabel">CHARGEMENT...</strong>
+            </div>
+            <button id="btnLogout" class="btn btn-outline-danger btn-sm w-100">Déconnexion</button>
+        </div>
+    </div>
+
+    <div class="main-content">
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2 class="fw-bold">Tableau de Bord</h2>
+                <p class="text-muted">Entreprise : <strong id="companyName">...</strong></p>
+            </div>
+            <button id="btnUpgrade" class="btn btn-warning fw-bold shadow-sm" style="display:none;" onclick="window.location.href='entreprise.html'">⭐ Passer Premium</button>
+        </div>
+
+        <div class="row g-4 mb-4">
+            <div class="col-md-6">
+                <div class="dash-card border-primary">
+                    <div class="stat-label text-primary">Dernier Audit</div>
+                    <div class="stat-val" id="auditScore">-- tCO₂</div>
+                    <small class="text-muted">Réalisé le <span id="auditDate">--/--/----</span></small>
+                    <div class="mt-3">
+                        <a href="livraison.html" class="btn btn-sm btn-outline-primary">Voir mon rapport</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="dash-card">
+                    <div class="stat-label">Statut du Compte</div>
+                    <div class="stat-val fs-4 mt-2" id="statusText">Gratuit</div>
+                    <p class="small text-muted mt-2">Passez à la version Pro pour débloquer les outils de pilotage et les sondages.</p>
+                </div>
+            </div>
+        </div>
+
+        <h4 class="fw-bold mb-3">Outils de Pilotage</h4>
+
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="premium-block">
+                    <div class="upgrade-overlay premium-lock">🔒 Réservé Pack Medium</div>
+
+                    <div class="dash-card content-to-blur">
+                        <h5 class="fw-bold mb-3">📝 Réponses Sondages</h5>
+                        <div class="d-flex justify-content-between align-items-end">
+                            <div class="stat-val">0</div>
+                            <button class="btn btn-primary btn-sm">Gérer</button>
+                        </div>
+                        <div class="progress mt-3" style="height: 5px;"><div class="progress-bar" style="width: 0%"></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="premium-block">
+                    <div class="upgrade-overlay premium-lock">🔒 Réservé Pack Expert</div>
+
+                    <div class="dash-card content-to-blur">
+                        <h5 class="fw-bold mb-3">⚡ Suivi Factures</h5>
+                        <div class="d-flex justify-content-between align-items-end">
+                            <div class="stat-val">0 €</div>
+                            <button class="btn btn-dark btn-sm">Uploader</button>
+                        </div>
+                        <small class="text-muted">Aucune facture analysée</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script type="module">
+        import { auth, db } from './js/firebase-config.js';
+        import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        // 1. Vérifier si connecté
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                // Récupérer les infos de la base de données
+                const docRef = doc(db, "entreprises", user.uid);
+                const docSnap = await getDoc(docRef);
+
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+
+                    // Remplir l'interface
+                    document.getElementById('companyName').innerText = data.nom;
+                    document.getElementById('packLabel').innerText = data.pack.toUpperCase();
+
+                    // Récupérer le score depuis le LocalStorage (Transition temporaire)
+                    // Idéalement, on sauverait ça dans Firebase lors de l'audit
+                    const localData = JSON.parse(localStorage.getItem('auditData'));
+                    if(localData) {
+                        document.getElementById('auditScore').innerText = localData.scoreCO2 + " tCO₂";
+                        document.getElementById('auditDate').innerText = localData.date;
+                    }
+
+                    // GESTION DU PACK (Gratuit vs Payant)
+                    if (data.pack === 'gratuit') {
+                        // On laisse les cadenas et le flou
+                        document.getElementById('statusText').innerText = "Mode Gratuit (Consultation)";
+                        document.getElementById('statusText').className = "stat-val fs-4 mt-2 text-secondary";
+                        document.getElementById('btnUpgrade').style.display = 'block';
+                        document.getElementById('packLabel').className = "text-secondary";
+                    } else {
+                        // C'EST PAYANT (Medium ou Expert) -> ON OUVRE TOUT !
+
+                        // 1. Enlever les cadenas du menu
+                        document.querySelectorAll('.lock-icon').forEach(el => el.style.display = 'none');
+
+                        // 2. Enlever les overlays et le flou
+                        document.querySelectorAll('.premium-lock').forEach(el => el.style.display = 'none');
+                        document.querySelectorAll('.content-to-blur').forEach(el => el.classList.remove('blur-content'));
+
+                        document.getElementById('statusText').innerText = "Licence Active ✅";
+                        document.getElementById('statusText').className = "stat-val fs-4 mt-2 text-success";
+                        document.getElementById('packLabel').className = "text-warning";
+                    }
+
+                } else {
+                    console.log("Aucun document trouvé !");
+                }
+            } else {
+                // Pas connecté -> Hop, dehors !
+                window.location.href = "login.html";
+            }
+        });
+
+        // 2. Bouton Déconnexion
+        document.getElementById('btnLogout').addEventListener('click', () => {
+            signOut(auth).then(() => {
+                window.location.href = "index.html";
+            });
+        });
+    </script>
+
+</body>
+</html>
