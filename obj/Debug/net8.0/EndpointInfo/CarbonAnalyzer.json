@@ -1,0 +1,191 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "CarbonAnalyzer",
+    "version": "1.0"
+  },
+  "paths": {
+    "/api/Carbon/calculer": {
+      "post": {
+        "tags": [
+          "Carbon"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CarbonRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CarbonRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CarbonRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/CarbonResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CarbonResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CarbonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/WeatherForecast": {
+      "get": {
+        "tags": [
+          "WeatherForecast"
+        ],
+        "operationId": "GetWeatherForecast",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WeatherForecast"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WeatherForecast"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WeatherForecast"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CarbonRequest": {
+        "type": "object",
+        "properties": {
+          "secteur": {
+            "type": "string",
+            "nullable": true
+          },
+          "nombreEmployes": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "codePostal": {
+            "type": "string",
+            "nullable": true
+          },
+          "typeChauffage": {
+            "type": "string",
+            "nullable": true
+          },
+          "intensiteTransport": {
+            "type": "string",
+            "nullable": true
+          },
+          "intensiteAchats": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CarbonResponse": {
+        "type": "object",
+        "properties": {
+          "totalCo2": {
+            "type": "number",
+            "format": "double"
+          },
+          "partTransport": {
+            "type": "number",
+            "format": "double"
+          },
+          "partEnergie": {
+            "type": "number",
+            "format": "double"
+          },
+          "partAchats": {
+            "type": "number",
+            "format": "double"
+          },
+          "conseilAction": {
+            "type": "string",
+            "nullable": true
+          },
+          "explicationCalcul": {
+            "type": "string",
+            "nullable": true
+          },
+          "titreBouton": {
+            "type": "string",
+            "nullable": true
+          },
+          "lienPartenaire": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "WeatherForecast": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "temperatureC": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "temperatureF": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "summary": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
+}

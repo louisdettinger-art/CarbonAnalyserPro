@@ -1,0 +1,5 @@
+wwwroot\entreprise.html
+wwwroot\index.html
+wwwroot\particulier.html
+wwwroot\livraison.html
+wwwroot\sondage.html
